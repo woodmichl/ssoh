@@ -1,0 +1,27 @@
+loglevel: info
+# delay in minutes between two resets
+reset_delay: 10
+# activate to skip the reset. useful for debugging
+no_restart: false
+check_ips:
+  # internal ips to check against
+  local:
+    - 10.10.10.1
+  # external ips to check against
+  global:
+    - 1.1.1.1
+    - 1.0.0.1
+    - 8.8.8.8
+    - 8.8.4.4
+    - 9.9.9.9
+    - 149.112.112.112
+    - 84.200.69.80
+    - 84.200.70.40
+opnsense_ipmi:
+  # protocol to access ipmi with
+  protocol: https
+  # ip address of your redfish supporting ipmi server
+  ip: 127.0.0.1
+  port: 443
+  # resetType: "On" for debug reasons; "ForceRestart" for use
+  reset_type: "On"
