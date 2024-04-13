@@ -256,3 +256,5 @@ cython_debug/
 
 /login.yml
 /config.yml
+
+/.idea
