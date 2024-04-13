@@ -86,11 +86,11 @@ def get_failed_ips() -> dict:
     }
     for ip in config["check_ips"]["local"]:
         pinglist = PingList.load(ip)
-        if pinglist.get_valid_percentage() < 0.5:
+        if pinglist.did_latest_fail() and pinglist.get_valid_percentage() < 0.5:
             failed["local"].append(ip)
     for ip in config["check_ips"]["global"]:
         pinglist = PingList.load(ip)
-        if pinglist.get_valid_percentage() < 0.5:
+        if pinglist.did_latest_fail() and pinglist.get_valid_percentage() < 0.5:
             failed["global"].append(ip)
     return failed
 
@@ -136,6 +136,7 @@ def reset_opnsense():
         clear_all_ips()
         json.dump(datetime.datetime.timestamp(datetime.datetime.now()), open("lastreset.json", "w"))
         log.debug("Wrote current timestamp to lastreset.json")
+        log.info("Successfully reset opnsense.")
     log.debug("Got Response from IPMI: " + str(resp.json()))
 
 
@@ -164,4 +165,4 @@ if __name__ == '__main__':
         log.error("More than half of all local ips failed. Restarting OPNSense...")
         reset_opnsense()
         exit(0)
-    log.info(f"Script ran successfully! No IPs failed.")
+    log.info(f"Script ran successfully! No restart required.")
