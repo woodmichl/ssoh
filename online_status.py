@@ -164,3 +164,4 @@ if __name__ == '__main__':
         log.error("More than half of all local ips failed. Restarting OPNSense...")
         reset_opnsense()
         exit(0)
+    log.info(f"Script ran successfully! No IPs failed.")
