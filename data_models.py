@@ -54,7 +54,7 @@ class PingList(BaseModel):
                 log.warning(f"Ping already exists for {ping.event_uuid}. Not adding Ping")
                 return
         # sort pings based on timestamp
-        self.pings.sort(key=lambda sorted_ping: ping.timestamp)
+        self.pings.sort(key=lambda sorted_ping: sorted_ping.timestamp)
         # delete pings more than 4
         while len(self.pings) >= 5:
             self.pings.pop(0)
@@ -66,7 +66,7 @@ class PingList(BaseModel):
         Creates a PingEvent based on ping details and appends it to the PingList
 
         Args:
-            failure: boolean indicating wether the ping failed
+            failure: boolean indicating whether the ping failed
             latency: latency of the ping
             timestamp: timestamp of the ping
         """
@@ -86,6 +86,16 @@ class PingList(BaseModel):
         if len(self.pings) == 0:
             return 1
         return valid_events / len(self.pings)
+
+    def did_latest_fail(self) -> bool:
+        """
+        Sorts array and checks if the latest ping failed
+
+        Returns: True if latest ping failed; False otherwise
+        """
+        # sort pings based on timestamp
+        self.pings.sort(key=lambda sorted_ping: sorted_ping.timestamp)
+        return self.pings[-1].failure
 
     @classmethod
     def load(cls, ip: IPv4Address):
